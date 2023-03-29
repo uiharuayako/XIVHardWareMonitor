@@ -1,0 +1,14 @@
+{
+    "Author": "Uiharu",
+    "Name": "XIVHardWareMonitor",
+    "Punchline": "硬件监控，信息来自开源项目Libre HardWare Monitor",
+    "Description": "硬件监控，输入/hardware打开主窗口",
+    "InternalName": "HardWareMonitor",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 7,
+    "Tags": [
+        "Monitor",
+        "plugin",
+        "HardWare"
+    ]
+}
