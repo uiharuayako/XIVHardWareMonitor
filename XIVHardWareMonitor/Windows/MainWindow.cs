@@ -10,7 +10,7 @@ namespace XIVHardWareMonitor.Windows;
 
 public class MainWindow : Window, IDisposable
 {
-    private Plugin Plugin;
+    private Plugin plugin;
     private Computer computer;
     private Configuration configuration;
 
@@ -23,7 +23,7 @@ public class MainWindow : Window, IDisposable
             MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
         };
         
-        this.Plugin = plugin;
+        this.plugin = plugin;
 
         computer = plugin.computer;
         configuration = plugin.Configuration;
@@ -37,12 +37,24 @@ public class MainWindow : Window, IDisposable
     {
         if (ImGui.Button("设置"))
         {
-            this.Plugin.DrawConfigUI();
+            this.plugin.DrawConfigUI();
         }
         ImGui.SameLine();
         if (ImGui.Button("状态栏设置"))
         {
-            this.Plugin.DrawDtrConfigUI();
+            this.plugin.DrawDtrConfigUI();
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("插件主页"))
+        {
+            Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/DalamudPlugins");
+            Plugin.ChatGui.Print("本插件目前还在测试阶段，还没放到这个仓库里");
+        }
+        ImGui.SameLine();
+        if (ImGui.Button("移除状态栏"))
+        {
+            plugin.HardwareDtrBar.Remove();
+            plugin.HardwareDtrBar.Dispose();
         }
         // 遍历硬件信息，以表的形式显示
         // 遍历传感器信息并输出表格

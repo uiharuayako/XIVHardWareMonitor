@@ -65,8 +65,7 @@ namespace XIVHardWareMonitor
             { SensorType.SmallData.ToString(), "MB" },
             { SensorType.Throughput.ToString(), "B/s" },
             { SensorType.TimeSpan.ToString(), "S" },
-            { SensorType.Energy.ToString(), "mWh" },
-            { SensorType.Noise.ToString(), "dBA" },
+            { SensorType.Energy.ToString(), "mWh" }
         };
     }
 }

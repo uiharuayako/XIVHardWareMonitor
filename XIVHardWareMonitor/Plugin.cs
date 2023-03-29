@@ -2,6 +2,7 @@ using Dalamud.Game.Command;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
+using Dalamud.Game.Gui;
 using Dalamud.Game.Gui.Dtr;
 using Dalamud.Interface.Windowing;
 using LibreHardwareMonitor.Hardware;
@@ -21,14 +22,26 @@ namespace XIVHardWareMonitor
 
         private ConfigWindow ConfigWindow { get; init; }
         private MainWindow MainWindow { get; init; }
+
         private DtrConfigWindow DtrConfigWindow { get; init; }
+
         // 硬件监控
         public Computer computer;
+
         public Watcher watcher;
+
         // 状态栏实体
         public DtrBarEntry HardwareDtrBar { get; init; }
+
         // Service
-        [PluginService][RequiredVersion("1.0")] public static DtrBar DtrBar { get; private set; } = null!;
+        [PluginService]
+        [RequiredVersion("1.0")]
+        public static DtrBar DtrBar { get; private set; } = null!;
+
+        [PluginService]
+        [RequiredVersion("1.0")]
+        public static ChatGui ChatGui { get; private set; } = null!;
+
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager)
@@ -40,18 +53,18 @@ namespace XIVHardWareMonitor
             this.Configuration.Initialize(this.PluginInterface);
 
             // 获取硬件监控
-             computer = new Computer()
-             {
-                 IsCpuEnabled = Configuration.IsCpuEnabled,
-                 IsGpuEnabled = Configuration.IsGpuEnabled,
-                 IsMemoryEnabled = Configuration.IsMemoryEnabled,
-                 IsMotherboardEnabled = Configuration.IsMotherboardEnabled,
-                 IsControllerEnabled = Configuration.IsControllerEnabled,
-                 IsNetworkEnabled = Configuration.IsNetworkEnabled,
-                 IsStorageEnabled = Configuration.IsStorageEnabled,
-                 IsBatteryEnabled = Configuration.IsBatteryEnabled,
-                 IsPsuEnabled = Configuration.IsPsuEnabled,
-             };
+            computer = new Computer()
+            {
+                IsCpuEnabled = Configuration.IsCpuEnabled,
+                IsGpuEnabled = Configuration.IsGpuEnabled,
+                IsMemoryEnabled = Configuration.IsMemoryEnabled,
+                IsMotherboardEnabled = Configuration.IsMotherboardEnabled,
+                IsControllerEnabled = Configuration.IsControllerEnabled,
+                IsNetworkEnabled = Configuration.IsNetworkEnabled,
+                IsStorageEnabled = Configuration.IsStorageEnabled,
+                IsBatteryEnabled = Configuration.IsBatteryEnabled,
+                IsPsuEnabled = Configuration.IsPsuEnabled,
+            };
             computer.Open();
             // 初始化状态栏
             HardwareDtrBar = DtrBar.Get(Name);
@@ -59,7 +72,7 @@ namespace XIVHardWareMonitor
             HardwareDtrBar.Text = "硬件监控";
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
-            DtrConfigWindow=new DtrConfigWindow(this);
+            DtrConfigWindow = new DtrConfigWindow(this);
 
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
@@ -72,19 +85,24 @@ namespace XIVHardWareMonitor
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
+            if (watcher != null)
+            {
+                watcher.Dispose();
+            }
             watcher = new Watcher(this);
         }
 
         public void Dispose()
         {
             WindowSystem.RemoveAllWindows();
-            
+
             ConfigWindow.Dispose();
             MainWindow.Dispose();
             if (computer != null)
             {
                 computer.Close();
             }
+
             watcher.Dispose();
             HardwareDtrBar.Remove();
             HardwareDtrBar.Dispose();
@@ -106,6 +124,7 @@ namespace XIVHardWareMonitor
         {
             MainWindow.Toggle();
         }
+
         public void DrawConfigUI()
         {
             ConfigWindow.Toggle();
