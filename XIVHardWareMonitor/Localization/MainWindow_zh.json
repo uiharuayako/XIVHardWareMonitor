@@ -1,0 +1,15 @@
+{
+  "WindowName":"硬件监控",
+  "Setting":"设置",
+  "DtrSet":"状态栏设置",
+  "HomePage":"插件主页",
+  "HardwareCount":"硬件数量",
+  "Order":"序号",
+  "Name":"名称",
+  "Unit":"单位",
+  "Value":"值",
+  "Min":"最小",
+  "Max":"最大",
+  "StatusBar":"状态栏",
+  "Add":"添加"
+}

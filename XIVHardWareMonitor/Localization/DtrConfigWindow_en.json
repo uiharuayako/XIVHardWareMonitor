@@ -6,12 +6,6 @@
     "DisplayHelp": "Using placeholders to refer info\n<name>:name\n<value>:value\n<unit>:unit",
     "Decimal": "Decimal",
     "Operation": "Operation",
-    "EnableMB": "Enable Motherboard Watcher",
-    "EnableController": "Enable Controller Watcher",
-    "EnableNetwork": "Enable Network Watcher",
-    "EnableStorage": "Enable Storage Watcher",
-    "EnableBattery": "Enable Battery Watcher",
-    "EnablePsu": "Enable PSU Watcher",
-    "Save": "Save"
+    "Delete": "Delete"
 }
 

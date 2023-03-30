@@ -14,11 +14,12 @@ namespace XIVHardWareMonitor
         // 以硬件名称为键，以硬件下的传感器字典为值
         // 第二层字典:Dictionary<string, ISensor>
         public static Dictionary<string, Dictionary<string, ISensor>> SensorsDictionary =
-            new Dictionary<string, Dictionary<string, ISensor>>();
+            new();
 
+        public static HardwareVisitor HardwareVisitor = new(SensorsDictionary);
     }
 
-    class HardwareVisitor : IVisitor
+    public class HardwareVisitor : IVisitor
     {
         private Dictionary<string, Dictionary<string, ISensor>> _sensors;
 

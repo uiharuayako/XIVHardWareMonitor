@@ -1,0 +1,15 @@
+{  
+  "WindowName":"XIV Hardware Monitor",
+  "Setting":"Setting",
+  "DtrSet":"Dtr Settings",
+  "HomePage":"Home Page",
+  "HardwareCount":"Hardware Count",
+  "Order":"Order",
+  "Name":"Name",
+  "Unit":"Unit",
+  "Value":"Value",
+  "Min":"Min",
+  "Max":"Max",
+  "StatusBar":"Status Bar",
+  "Add":"Add"
+}

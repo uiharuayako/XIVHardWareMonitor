@@ -130,6 +130,7 @@ public class ConfigWindow : Window, IDisposable
 
         if (ImGui.Button(windowDic["Save"]))
         {
+            Plugin.ChatGui.Print("保存设置");
             plugin.computer.IsCpuEnabled = enableCpu;
             plugin.computer.IsGpuEnabled = enableGpu;
             plugin.computer.IsMemoryEnabled = enableMemory;

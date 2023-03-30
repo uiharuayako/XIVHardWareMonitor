@@ -95,7 +95,7 @@ namespace XIVHardWareMonitor.Windows
                     }
                     ImGui.NextColumn();
                     // 删除按钮
-                    if (ImGui.Button($"删除##delete{i}"))
+                    if (ImGui.Button($"{windowDic["Delete"]}##delete{i}"))
                     {
                         configuration.WatchedSensors.RemoveAt(i);
                         configuration.Save();

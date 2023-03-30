@@ -75,6 +75,8 @@
         <None Remove="Localization\ConfigWindow_en.json" />
         <None Remove="Localization\DtrConfigWindow_en.json" />
         <None Remove="Localization\DtrConfigWindow_zh.json" />
+        <None Remove="Localization\MainWindow_en.json" />
+        <None Remove="Localization\MainWindow_zh.json" />
         <Compile Update="Properties\Resource.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>

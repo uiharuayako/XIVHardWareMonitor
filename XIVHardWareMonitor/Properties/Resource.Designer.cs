@@ -118,11 +118,10 @@ namespace XIVHardWareMonitor.Properties {
         ///    &quot;DisplayHelp&quot;: &quot;Using placeholders to refer info\n&lt;name&gt;:name\n&lt;value&gt;:value\n&lt;unit&gt;:unit&quot;,
         ///    &quot;Decimal&quot;: &quot;Decimal&quot;,
         ///    &quot;Operation&quot;: &quot;Operation&quot;,
-        ///    &quot;EnableMB&quot;: &quot;Enable Motherboard Watcher&quot;,
-        ///    &quot;EnableController&quot;: &quot;Enable Controller Watcher&quot;,
-        ///    &quot;EnableNetwork&quot;: &quot;Enable Network Watcher&quot;,
-        ///    &quot;EnableStorage&quot;: &quot;Enable Storage Watcher&quot;,
-        ///    &quot;EnableBattery&quot;: &quot;Enable Battery Watcher&quot;, [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    &quot;Delete&quot;: &quot;Delete&quot;
+        ///}
+        ///
+        /// 的本地化字符串。
         /// </summary>
         public static string DtrConfigWindow_en {
             get {
@@ -139,20 +138,62 @@ namespace XIVHardWareMonitor.Properties {
         ///    &quot;DisplayHelp&quot;: &quot;使用占位符指代信息\n&lt;name&gt;:传感器名称\n&lt;value&gt;:值\n&lt;unit&gt;:单位&quot;,
         ///    &quot;Decimal&quot;: &quot;小数位&quot;,
         ///    &quot;Operation&quot;: &quot;操作&quot;,
-        ///    &quot;EnableMEM&quot;: &quot;监控内存信息&quot;,
-        ///    &quot;EnableMB&quot;: &quot;监控主板信息&quot;,
-        ///    &quot;EnableController&quot;: &quot;监控控制器信息&quot;,
-        ///    &quot;EnableNetwork&quot;: &quot;监控网络信息&quot;,
-        ///    &quot;EnableStorage&quot;: &quot;监控储存信息&quot;,
-        ///    &quot;EnableBattery&quot;: &quot;监控内存信息&quot;,
-        ///    &quot;EnablePsu&quot;: &quot;监控电源信息&quot;,
-        ///    &quot;Save&quot;: &quot;保存&quot;
+        ///    &quot;Delete&quot;: &quot;删除&quot;
         ///}
         /// 的本地化字符串。
         /// </summary>
         public static string DtrConfigWindow_zh {
             get {
                 return ResourceManager.GetString("DtrConfigWindow_zh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {  
+        ///  &quot;WindowName&quot;:&quot;XIV Hardware Monitor Settings&quot;,
+        ///  &quot;Home&quot;:&quot;Home&quot;,
+        ///  &quot;DtrSet&quot;:&quot;Dtr Settings&quot;,
+        ///  &quot;Language&quot;:&quot;Language&quot;,
+        ///  &quot;RefreshRate&quot;:&quot;Refresh Rate&quot;,
+        ///  &quot;EnableCPU&quot;:&quot;Enable CPU Watcher&quot;,
+        ///  &quot;EnableGPU&quot;:&quot;Enable GPU Watcher&quot;,
+        ///  &quot;EnableMEM&quot;:&quot;Enable Memory Watcher&quot;,
+        ///  &quot;EnableMB&quot;:&quot;Enable Motherboard Watcher&quot;,
+        ///  &quot;EnableController&quot;:&quot;Enable Controller Watcher&quot;,
+        ///  &quot;EnableNetwork&quot;:&quot;Enable Network Watcher&quot;,
+        ///  &quot;EnableStorage&quot;:&quot;Enable Storage Watcher&quot;,
+        ///  &quot;EnableBattery&quot;:&quot;Enable Battery Watcher&quot;,
+        ///  &quot;Enable [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        public static string MainWindow_en {
+            get {
+                return ResourceManager.GetString("MainWindow_en", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 {
+        ///  &quot;WindowName&quot;:&quot;硬件监控设置&quot;,
+        ///  &quot;Home&quot;:&quot;主界面&quot;,
+        ///  &quot;DtrSet&quot;:&quot;状态栏设置&quot;,
+        ///  &quot;Language&quot;:&quot;语言&quot;,
+        ///  &quot;RefreshRate&quot;:&quot;刷新间隔&quot;,
+        ///  &quot;EnableCPU&quot;:&quot;监控CPU信息&quot;,
+        ///  &quot;EnableGPU&quot;:&quot;监控GPU信息&quot;,
+        ///  &quot;EnableMEM&quot;:&quot;监控内存信息&quot;,
+        ///  &quot;EnableMB&quot;:&quot;监控主板信息&quot;,
+        ///  &quot;EnableController&quot;:&quot;监控控制器信息&quot;,
+        ///  &quot;EnableNetwork&quot;:&quot;监控网络信息&quot;,
+        ///  &quot;EnableStorage&quot;:&quot;监控储存信息&quot;,
+        ///  &quot;EnableBattery&quot;:&quot;监控电池信息&quot;,
+        ///  &quot;EnablePsu&quot;:&quot;监控电源信息&quot;,
+        ///  &quot;Save&quot;:&quot;保存&quot;
+        ///}
+        /// 的本地化字符串。
+        /// </summary>
+        public static string MainWindow_zh {
+            get {
+                return ResourceManager.GetString("MainWindow_zh", resourceCulture);
             }
         }
     }

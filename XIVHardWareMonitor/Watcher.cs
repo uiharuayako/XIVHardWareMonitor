@@ -36,11 +36,11 @@ namespace XIVHardWareMonitor
             timer = new Timer(configuration.RefreshRate);
             dtrStrList=new List<string>();
             // 刷新硬件信息
-            timer.Elapsed += ((sender, args) =>
+            timer.Elapsed += (sender, args) =>
                                  {
-                                     if(computer!=null) computer.Traverse(hardwareVisitor);
+                                     computer.Traverse(Sensors.HardwareVisitor);
                                      entry.Text = GetDtrStr();
-                                 });
+                                 };
             timer.Start();
         }
         // 修改timer的间隔时间

@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
 using ImGuiScene;
 using LibreHardwareMonitor.Hardware;
+using Newtonsoft.Json;
+using XIVHardWareMonitor.Properties;
 
 namespace XIVHardWareMonitor.Windows;
 
@@ -13,6 +16,7 @@ public class MainWindow : Window, IDisposable
     private Plugin plugin;
     private Computer computer;
     private Configuration configuration;
+    private Dictionary<string, string> windowDic;
 
     public MainWindow(Plugin plugin) : base(
         "硬件监视", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
@@ -27,61 +31,66 @@ public class MainWindow : Window, IDisposable
 
         computer = plugin.computer;
         configuration = plugin.Configuration;
+        // 读取语言文件
+        string jsonStr = Resource.ResourceManager.GetString($"MainWindow_{configuration.Language}");
+        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+        WindowName = windowDic["WindowName"];
     }
+    public void UpdateLanguage()
+    {
+        // 读取语言文件
+        string jsonStr = Resource.ResourceManager.GetString($"MainWindow_{configuration.Language}");
+        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+        WindowName = windowDic["WindowName"];
 
+    }
     public void Dispose() { }
 
     public override void Draw()
     {
-        if (ImGui.Button("设置"))
+        if (ImGui.Button(windowDic["Setting"]))
         {
             this.plugin.DrawConfigUI();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("状态栏设置"))
+        if (ImGui.Button(windowDic["DtrSet"]))
         {
             this.plugin.DrawDtrConfigUI();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("插件主页"))
+        if (ImGui.Button(windowDic["HomePage"]))
         {
             Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/DalamudPlugins");
             Plugin.ChatGui.Print("本插件目前还在测试阶段，还没放到这个仓库里");
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("移除状态栏"))
-        {
-            plugin.HardwareDtrBar.Remove();
-            plugin.HardwareDtrBar.Dispose();
-        }
-
         // 遍历硬件信息，以表的形式显示
         // 遍历传感器信息并输出表格
-        int i = 0;
-        ImGui.Text($"硬件数量{Sensors.SensorsDictionary.Count}");
+        ImGui.Text($"{windowDic["HardwareCount"]}：{Sensors.SensorsDictionary.Count}");
         if (ImGui.BeginChild("Hardware List", new Vector2(0f, -1f), true))
         {
             foreach (var hardware in Sensors.SensorsDictionary)
             {
                 if (ImGui.CollapsingHeader(hardware.Key))
                 {
+                    int i = 0;
                     ImGui.Columns(7, hardware.Key);
-                    ImGui.Text("序号");
+                    ImGui.Text(windowDic["Order"]);
                     ImGui.NextColumn();
-                    ImGui.Text("名称");
+                    ImGui.Text(windowDic["Name"]);
                     ImGui.NextColumn();
-                    ImGui.Text("单位");
+                    ImGui.Text(windowDic["Unit"]);
                     ImGui.NextColumn();
-                    ImGui.Text("值");
+                    ImGui.Text(windowDic["Value"]);
                     ImGui.NextColumn();
-                    ImGui.Text("Min");
+                    ImGui.Text(windowDic["Min"]);
                     ImGui.NextColumn();
-                    ImGui.Text("Max");
+                    ImGui.Text(windowDic["Max"]);
                     ImGui.NextColumn();
-                    ImGui.Text("状态栏");
+                    ImGui.Text(windowDic["StatusBar"]);
                     ImGui.NextColumn();
                     foreach (var sensor in hardware.Value)
                     {
@@ -99,7 +108,7 @@ public class MainWindow : Window, IDisposable
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Max.ToString());
                         ImGui.NextColumn();
-                        if (ImGui.Button($"添加##{hardware.Key}-{sensor.Key}"))
+                        if (ImGui.Button($"{windowDic["Add"]}##{hardware.Key}-{sensor.Key}"))
                         {
                             configuration.WatchedSensors.Add(
                                 new WatchedSensor(hardware.Key, sensor.Key, sensor.Value.Name));

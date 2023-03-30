@@ -130,4 +130,10 @@
   <data name="DtrConfigWindow_zh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Localization\DtrConfigWindow_zh.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="MainWindow_en" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\localization\mainwindow_en.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
+  </data>
+  <data name="MainWindow_zh" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\localization\mainwindow_zh.json;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>

@@ -100,8 +100,8 @@ namespace XIVHardWareMonitor
         public void UpdateLanguage()
         {
             ConfigWindow.UpdateLanguage();
-            // MainWindow.UpdateLanguage();
-            // DtrConfigWindow.UpdateLanguage();
+            MainWindow.UpdateLanguage();
+            DtrConfigWindow.UpdateLanguage();
         }
         public void Dispose()
         {
