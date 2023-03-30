@@ -61,7 +61,21 @@ public class ConfigWindow : Window, IDisposable
         double refreshRate = configuration.RefreshRate;
         if (ImGui.InputDouble(windowDic["RefreshRate"], ref refreshRate, 100, 500, "%.1f"))
         {
+            if (refreshRate < 100)
+            {
+                refreshRate = 100;
+            }
             configuration.RefreshRate = refreshRate;
+        }
+        // 修改报警间隔
+        double warningRate = configuration.WarningRate;
+        if (ImGui.InputDouble(windowDic["WarningRate"], ref warningRate, 10, 50, "%.1f"))
+        {
+            if (warningRate < 5)
+            {
+                warningRate = 5;
+            }
+            configuration.WarningRate = warningRate;
         }
 
         bool enableCpu = configuration.IsCpuEnabled;
@@ -126,7 +140,13 @@ public class ConfigWindow : Window, IDisposable
             configuration.IsPsuEnabled = enablePsu;
             configuration.Save();
         }
-
+        // 设置分隔符
+        string separator = configuration.Separator;
+        if (ImGui.InputText(windowDic["Separator"], ref separator, 20))
+        {
+            configuration.Separator = separator;
+            configuration.Save();
+        }
 
         if (ImGui.Button(windowDic["Save"]))
         {
@@ -142,6 +162,7 @@ public class ConfigWindow : Window, IDisposable
             plugin.computer.IsPsuEnabled = enablePsu;
             Sensors.SensorsDictionary.Clear();
             plugin.watcher.SetInterval(refreshRate);
+            plugin.watcher.SetWarningInterval(warningRate);
             configuration.Save();
         }
     }

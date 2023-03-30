@@ -6,6 +6,8 @@
     "DisplayHelp": "Using placeholders to refer info\n<name>:name\n<value>:value\n<unit>:unit",
     "Decimal": "Decimal",
     "Operation": "Operation",
+    "EnableWarning": "Enable Warning",
+    "WarningThreshold": "Threshold",
     "Delete": "Delete"
 }
 

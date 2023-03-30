@@ -59,6 +59,7 @@ namespace XIVHardWareMonitor
             {
                 computer = new Computer()
                 {
+#if RELEASE
                     IsCpuEnabled = Configuration.IsCpuEnabled,
                     IsGpuEnabled = Configuration.IsGpuEnabled,
                     IsMemoryEnabled = Configuration.IsMemoryEnabled,
@@ -68,6 +69,18 @@ namespace XIVHardWareMonitor
                     IsStorageEnabled = Configuration.IsStorageEnabled,
                     IsBatteryEnabled = Configuration.IsBatteryEnabled,
                     IsPsuEnabled = Configuration.IsPsuEnabled,
+#endif
+#if DEBUG
+                    IsCpuEnabled = true,
+                    IsGpuEnabled = true,
+                    IsMemoryEnabled = true,
+                    IsMotherboardEnabled = true,
+                    IsControllerEnabled = true,
+                    IsNetworkEnabled = true,
+                    IsStorageEnabled = true,
+                    IsBatteryEnabled = true,
+                    IsPsuEnabled = true,
+#endif
                 };
                 computer.Open();
             }
@@ -95,6 +108,32 @@ namespace XIVHardWareMonitor
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
             watcher = new Watcher(this);
+
+#if DEBUG
+            foreach (var hardwareItem in computer.Hardware)
+            {
+                hardwareItem.Update();
+
+                Dalamud.Logging.PluginLog.Log($"Hardware: {hardwareItem.Name} ({hardwareItem.HardwareType})");
+
+                foreach (var sensor in hardwareItem.Sensors)
+                {
+                    Dalamud.Logging.PluginLog.Log($"\t{sensor.Identifier} ({sensor.SensorType}) : {sensor.Value}");
+                }
+
+                foreach (var subHardware in hardwareItem.SubHardware)
+                {
+                    subHardware.Update();
+
+                    Dalamud.Logging.PluginLog.Log($"\tSub Hardware: {subHardware.Name} ({subHardware.HardwareType})");
+
+                    foreach (var sensor in subHardware.Sensors)
+                    {
+                        Dalamud.Logging.PluginLog.Log($"\t\t{sensor.Identifier} ({sensor.SensorType}) : {sensor.Value}");
+                    }
+                }
+            }
+#endif
         }
         // 修改语言后，更新语言
         public void UpdateLanguage()

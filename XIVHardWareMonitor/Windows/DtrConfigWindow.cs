@@ -47,7 +47,7 @@ namespace XIVHardWareMonitor.Windows
         {
             if (ImGui.BeginChild("HardwareDtrBarSets"))
             {
-                ImGui.Columns(5);
+                ImGui.Columns(7);
                 ImGui.Text(windowDic["Enable"]);
                 ImGui.NextColumn();
                 ImGui.Text(windowDic["Name"]);
@@ -58,6 +58,12 @@ namespace XIVHardWareMonitor.Windows
                 ImGui.NextColumn();
                 ImGui.Text(windowDic["Decimal"]);
                 ImGui.NextColumn();
+                // 预警相关
+                ImGui.Text(windowDic["EnableWarning"]);
+                ImGui.NextColumn();
+                ImGui.Text(windowDic["WarningThreshold"]);
+                ImGui.NextColumn();
+
                 ImGui.Text(windowDic["Operation"]);
                 ImGui.NextColumn();
                 for (int i = 0; i < configuration.WatchedSensors.Count; i++)
@@ -94,6 +100,22 @@ namespace XIVHardWareMonitor.Windows
                         configuration.Save();
                     }
                     ImGui.NextColumn();
+
+                    bool enableWarning = configuration.WatchedSensors[i].EnableWarning;
+                    if (ImGui.Checkbox($"##enableWarning{i}", ref enableWarning))
+                    {
+                        configuration.WatchedSensors[i].EnableWarning = enableWarning;
+                        configuration.Save();
+                    }
+                    ImGui.NextColumn();
+                    double threshold = configuration.WatchedSensors[i].WarningThreshold;
+                    if (ImGui.InputDouble($"##threshold{i}", ref threshold, 100, 500, "%.1f"))
+                    {
+                        configuration.WatchedSensors[i].WarningThreshold = threshold;
+                        configuration.Save();
+                    }
+                    ImGui.NextColumn();
+
                     // 删除按钮
                     if (ImGui.Button($"{windowDic["Delete"]}##delete{i}"))
                     {

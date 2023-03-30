@@ -21,10 +21,14 @@ namespace XIVHardWareMonitor
                     IsPsuEnabled = false;
         // 刷新频率 单位ms
         public double RefreshRate = 1000;
+        // 警报频率 单位s
+        public double WarningRate = 300;
         // 被监控的硬件项目列表
         public List<WatchedSensor> WatchedSensors { get; set; } =new List<WatchedSensor>();
         // 语言
         public string Language = "zh";
+        // 分隔符
+        public string Separator = " | ";
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

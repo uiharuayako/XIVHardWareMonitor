@@ -6,5 +6,7 @@
     "DisplayHelp": "使用占位符指代信息\n<name>:传感器名称\n<value>:值\n<unit>:单位",
     "Decimal": "小数位",
     "Operation": "操作",
+    "EnableWarning": "开启预警",
+    "WarningThreshold": "警报阈值",
     "Delete": "删除"
 }

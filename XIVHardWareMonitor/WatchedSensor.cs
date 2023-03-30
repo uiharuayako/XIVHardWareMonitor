@@ -10,12 +10,17 @@ namespace XIVHardWareMonitor
     // 这个类用于存放被监视的Sensor信息
     public class WatchedSensor
     {
+        // 不能改
         public readonly string Identifier;
         public readonly string HardWare;
+        public readonly string Name;
+        // 可修改的
         public string InfoStr;
         public bool IsVisible;
-
-        public readonly string Name;
+        // 警戒阈值
+        public double WarningThreshold;
+        public bool EnableWarning;
+ 
 
         // 保留小数位数
         public int Decimal;
@@ -28,6 +33,8 @@ namespace XIVHardWareMonitor
             IsVisible = true;
             InfoStr = "<name>: <value> <unit>";
             Decimal = 2;
+            WarningThreshold = 100;
+            EnableWarning = false;
         }
 
         public string GetResult(ISensor sensor)
@@ -44,6 +51,18 @@ namespace XIVHardWareMonitor
             string[] results =
                 { sensor.Name, valueStr, unit };
             return StaticUtils.ReplaceStrings(InfoStr, StaticUtils.PlaceHolders, results);
+        }
+
+        public bool IsAboveThreshold(ISensor sensor)
+        {
+            string valueStr = "";
+            if (sensor.Value != null)
+            {
+                valueStr = StaticUtils.FormatFloatString(sensor.Value.ToString(), Decimal);
+            }
+            
+            double.TryParse(valueStr, out double realValue);
+            return realValue > WarningThreshold;
         }
     }
 }
