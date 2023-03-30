@@ -61,25 +61,25 @@ namespace XIVHardWareMonitor
             return dict;
         }
 
-        public static Dictionary<string, string> UnitDictionary = new Dictionary<string, string>
+        public static Dictionary<SensorType, string> UnitDictionary = new()
         {
-            { SensorType.Voltage.ToString(), "V" },
-            { SensorType.Current.ToString(), "A" },
-            { SensorType.Power.ToString(), "W" },
-            { SensorType.Clock.ToString(), "MHz" },
-            { SensorType.Temperature.ToString(), "°C" },
-            { SensorType.Load.ToString(), "%%" },
-            { SensorType.Frequency.ToString(), "Hz" },
-            { SensorType.Fan.ToString(), "RPM" },
-            { SensorType.Flow.ToString(), "L/h" },
-            { SensorType.Control.ToString(), "%%" },
-            { SensorType.Level.ToString(), "%%" },
-            { SensorType.Factor.ToString(), "MHz" },
-            { SensorType.Data.ToString(), "GB" },
-            { SensorType.SmallData.ToString(), "MB" },
-            { SensorType.Throughput.ToString(), "B/s" },
-            { SensorType.TimeSpan.ToString(), "S" },
-            { SensorType.Energy.ToString(), "mWh" }
+            { SensorType.Voltage, "V" },
+            { SensorType.Current, "A" },
+            { SensorType.Clock, "MHz" },
+            { SensorType.Temperature, "°C" },
+            { SensorType.Load, "%%" },
+            { SensorType.Fan, "RPM" },
+            { SensorType.Flow, "L/h" },
+            { SensorType.Control, "%%" },
+            { SensorType.Level, "%%" },
+            { SensorType.Factor, "1" },
+            { SensorType.Power, "W" },
+            { SensorType.Data, "GB" },
+            { SensorType.Frequency, "Hz" },
+            { SensorType.Energy, "mWh" },
+            { SensorType.SmallData, "MB" },
+            { SensorType.Throughput, "B/s" },
+            { SensorType.TimeSpan, "S" },
         };
 
         public static Dictionary<string, int> LanguageDictionary = new Dictionary<string, int>
@@ -87,6 +87,7 @@ namespace XIVHardWareMonitor
             { "zh", 0 },
             { "en", 1 }
         };
+
         // 储存插件地址
         public static string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     }

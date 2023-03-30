@@ -36,14 +36,15 @@ public class MainWindow : Window, IDisposable
         windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
         WindowName = windowDic["WindowName"];
     }
+
     public void UpdateLanguage()
     {
         // 读取语言文件
         string jsonStr = Resource.ResourceManager.GetString($"MainWindow_{configuration.Language}");
         windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
         WindowName = windowDic["WindowName"];
-
     }
+
     public void Dispose() { }
 
     public override void Draw()
@@ -99,8 +100,13 @@ public class MainWindow : Window, IDisposable
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Name);
                         ImGui.NextColumn();
-                        ImGui.TextColored(ImGuiColors.DPSRed,
-                                          StaticUtils.UnitDictionary[sensor.Value.SensorType.ToString()]);
+                        string unitStr = "";
+                        if (StaticUtils.UnitDictionary.ContainsKey(sensor.Value.SensorType))
+                        {
+                            unitStr = StaticUtils.UnitDictionary[sensor.Value.SensorType];
+                        }
+
+                        ImGui.TextColored(ImGuiColors.DPSRed, unitStr);
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Value.ToString());
                         ImGui.NextColumn();

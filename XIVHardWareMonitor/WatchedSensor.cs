@@ -38,7 +38,7 @@ namespace XIVHardWareMonitor
                 valueStr = StaticUtils.FormatFloatString(sensor.Value.ToString(), Decimal);
             }
 
-            string unit = StaticUtils.UnitDictionary[sensor.SensorType.ToString()];
+            string unit = StaticUtils.UnitDictionary[sensor.SensorType];
             // tmd，为什么会有这种情况......
             if (unit.Equals("%%")) unit = "%";
             string[] results =

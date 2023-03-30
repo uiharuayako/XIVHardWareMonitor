@@ -89,7 +89,7 @@ namespace XIVHardWareMonitor
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "A useful message to display in /xlhelp"
+                HelpMessage = "/hardware Open main window."
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
@@ -108,7 +108,6 @@ namespace XIVHardWareMonitor
             Dalamud.Logging.PluginLog.Log("开始卸载Hardware Monitor");
             watcher.Dispose();
             computer.Close();
-            computer = null!;
             WindowSystem.RemoveAllWindows();
             
             ConfigWindow.Dispose();
