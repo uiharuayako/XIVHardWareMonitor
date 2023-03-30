@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using LibreHardwareMonitor.Hardware;
+using Newtonsoft.Json;
 
 namespace XIVHardWareMonitor
 {
@@ -15,11 +18,13 @@ namespace XIVHardWareMonitor
             "<value>",
             "<unit>"
         };
+
         public static string ReplaceStrings(string inputString, string[] originalStrings, string[] replacementStrings)
         {
             if (originalStrings.Length != replacementStrings.Length)
             {
-                throw new ArgumentException("The number of original strings must match the number of replacement strings.");
+                throw new ArgumentException(
+                    "The number of original strings must match the number of replacement strings.");
             }
 
             for (int i = 0; i < originalStrings.Length; i++)
@@ -29,6 +34,7 @@ namespace XIVHardWareMonitor
 
             return inputString;
         }
+
         // 保留n位小数
         public static string FormatFloatString(string str, int n)
         {
@@ -45,6 +51,14 @@ namespace XIVHardWareMonitor
 
             result = (float)Math.Round(result, n);
             return result.ToString();
+        }
+
+        // 读取json文件为Dictionary<string, string>
+        public static Dictionary<string, string> ReadJsonFile(string filePath)
+        {
+            string jsonStr = File.ReadAllText(filePath);
+            Dictionary<string, string> dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+            return dict;
         }
 
         public static Dictionary<string, string> UnitDictionary = new Dictionary<string, string>
@@ -67,5 +81,13 @@ namespace XIVHardWareMonitor
             { SensorType.TimeSpan.ToString(), "S" },
             { SensorType.Energy.ToString(), "mWh" }
         };
+
+        public static Dictionary<string, int> LanguageDictionary = new Dictionary<string, int>
+        {
+            { "zh", 0 },
+            { "en", 1 }
+        };
+        // 储存插件地址
+        public static string PluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
     }
 }

@@ -38,7 +38,7 @@ namespace XIVHardWareMonitor
             // 刷新硬件信息
             timer.Elapsed += ((sender, args) =>
                                  {
-                                     computer.Traverse(hardwareVisitor);
+                                     if(computer!=null) computer.Traverse(hardwareVisitor);
                                      entry.Text = GetDtrStr();
                                  });
             timer.Start();
@@ -50,7 +50,16 @@ namespace XIVHardWareMonitor
             timer.Interval = interval;
             timer.Enabled = true;
         }
-
+        // 暂停
+        public void Pause()
+        {
+            if (timer.Enabled) timer.Enabled = false;
+        }
+        // 继续
+        public void Continue()
+        {
+            if(!timer.Enabled) timer.Enabled = true;
+        }
         public string GetDtrStr()
         {
             // 先清空

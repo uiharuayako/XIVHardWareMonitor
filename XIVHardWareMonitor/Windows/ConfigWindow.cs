@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using Newtonsoft.Json;
+using XIVHardWareMonitor.Properties;
 
 namespace XIVHardWareMonitor.Windows;
 
@@ -9,7 +12,7 @@ public class ConfigWindow : Window, IDisposable
 {
     private Configuration configuration;
     private Plugin plugin;
-
+    private Dictionary<string, string> windowDic;
     public ConfigWindow(Plugin plugin) : base(
         "硬件监控设置",
         ImGuiWindowFlags.NoCollapse)
@@ -17,86 +20,115 @@ public class ConfigWindow : Window, IDisposable
         this.plugin=plugin;
         Size = new Vector2(320, ImGui.GetTextLineHeightWithSpacing() + ImGui.GetTextLineHeight() * 13);
         SizeCondition = ImGuiCond.Once;
-
-        this.configuration = plugin.Configuration;
+        configuration = plugin.Configuration;
+        // 读取语言文件
+        string jsonStr = Resource.ResourceManager.GetString($"ConfigWindow_{configuration.Language}");
+        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+        WindowName = windowDic["WindowName"];
     }
 
+    public void UpdateLanguage()
+    {
+        // 读取语言文件
+        string jsonStr = Resource.ResourceManager.GetString($"ConfigWindow_{configuration.Language}");
+        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+        WindowName = windowDic["WindowName"];
+
+    }
     public void Dispose() { }
 
     public override void Draw()
     {
-        if (ImGui.Button("主界面"))
+        if (ImGui.Button(windowDic["Home"]))
         {
             plugin.DrawMainUI();
         }
         ImGui.SameLine();
-        if (ImGui.Button("状态栏设置"))
+        if (ImGui.Button(windowDic["DtrSet"]))
         {
             plugin.DrawDtrConfigUI();
         }
+        // 修改语言
+        int language=StaticUtils.LanguageDictionary[configuration.Language];
+        string[] langStrings = { "zh", "en" };
+        if (ImGui.Combo(windowDic["Language"], ref language,langStrings,langStrings.Length))
+        {
+            configuration.Language = langStrings[language];
+            plugin.UpdateLanguage();
+            configuration.Save();
+        }
         // 修改获取间隔
         double refreshRate = configuration.RefreshRate;
-        if(ImGui.InputDouble("刷新间隔",ref refreshRate, 100, 500, "%.1f"))
+        if (ImGui.InputDouble(windowDic["RefreshRate"], ref refreshRate, 100, 500, "%.1f"))
         {
             configuration.RefreshRate = refreshRate;
         }
 
         bool enableCpu = configuration.IsCpuEnabled;
-        if (ImGui.Checkbox("监控CPU信息", ref enableCpu))
+        if (ImGui.Checkbox(windowDic["EnableCPU"], ref enableCpu))
         {
             configuration.IsCpuEnabled = enableCpu;
+            configuration.Save();
         }
 
         bool enableGpu = configuration.IsGpuEnabled;
-        if (ImGui.Checkbox("监控GPU信息", ref enableGpu))
+        if (ImGui.Checkbox(windowDic["EnableGPU"], ref enableGpu))
         {
             configuration.IsGpuEnabled = enableGpu;
+            configuration.Save();
         }
 
         bool enableMemory = configuration.IsMemoryEnabled;
-        if (ImGui.Checkbox("监控内存信息", ref enableMemory))
+        if (ImGui.Checkbox(windowDic["EnableMEM"], ref enableMemory))
         {
             configuration.IsMemoryEnabled = enableMemory;
+            configuration.Save();
         }
 
         bool enableMotherboard = configuration.IsMotherboardEnabled;
-        if (ImGui.Checkbox("监控主板信息", ref enableMotherboard))
+        if (ImGui.Checkbox(windowDic["EnableMB"], ref enableMotherboard))
         {
             configuration.IsMotherboardEnabled = enableMotherboard;
+            configuration.Save();
         }
 
         bool enableController = configuration.IsControllerEnabled;
-        if (ImGui.Checkbox("监控控制器信息", ref enableController))
+        if (ImGui.Checkbox(windowDic["EnableController"], ref enableController))
         {
             configuration.IsControllerEnabled = enableController;
+            configuration.Save();
         }
 
         bool enableNetwork = configuration.IsNetworkEnabled;
-        if (ImGui.Checkbox("监控网络信息", ref enableNetwork))
+        if (ImGui.Checkbox(windowDic["EnableNetwork"], ref enableNetwork))
         {
             configuration.IsNetworkEnabled = enableNetwork;
+            configuration.Save();
         }
 
         bool enableStorage = configuration.IsStorageEnabled;
-        if (ImGui.Checkbox("监控存储信息", ref enableStorage))
+        if (ImGui.Checkbox(windowDic["EnableStorage"], ref enableStorage))
         {
             configuration.IsStorageEnabled = enableStorage;
+            configuration.Save();
         }
 
         bool enableBattery = configuration.IsBatteryEnabled;
-        if (ImGui.Checkbox("监控电池信息", ref enableBattery))
+        if (ImGui.Checkbox(windowDic["EnableBattery"], ref enableBattery))
         {
             configuration.IsBatteryEnabled = enableBattery;
+            configuration.Save();
         }
 
         bool enablePsu = configuration.IsPsuEnabled;
-        if (ImGui.Checkbox("监控电源信息", ref enablePsu))
+        if (ImGui.Checkbox(windowDic["EnablePsu"], ref enablePsu))
         {
             configuration.IsPsuEnabled = enablePsu;
+            configuration.Save();
         }
 
 
-        if (ImGui.Button("保存"))
+        if (ImGui.Button(windowDic["Save"]))
         {
             plugin.computer.IsCpuEnabled = enableCpu;
             plugin.computer.IsGpuEnabled = enableGpu;
@@ -107,6 +139,7 @@ public class ConfigWindow : Window, IDisposable
             plugin.computer.IsStorageEnabled = enableStorage;
             plugin.computer.IsBatteryEnabled = enableBattery;
             plugin.computer.IsPsuEnabled = enablePsu;
+            Sensors.SensorsDictionary.Clear();
             plugin.watcher.SetInterval(refreshRate);
             configuration.Save();
         }

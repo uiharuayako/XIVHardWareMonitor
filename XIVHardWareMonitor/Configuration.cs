@@ -23,6 +23,8 @@ namespace XIVHardWareMonitor
         public double RefreshRate = 1000;
         // 被监控的硬件项目列表
         public List<WatchedSensor> WatchedSensors { get; set; } =new List<WatchedSensor>();
+        // 语言
+        public string Language = "zh";
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

@@ -1,0 +1,17 @@
+{  
+  "WindowName":"XIV Hardware Monitor Settings",
+  "Home":"Home",
+  "DtrSet":"Dtr Settings",
+  "Language":"Language",
+  "RefreshRate":"Refresh Rate",
+  "EnableCPU":"Enable CPU Watcher",
+  "EnableGPU":"Enable GPU Watcher",
+  "EnableMEM":"Enable Memory Watcher",
+  "EnableMB":"Enable Motherboard Watcher",
+  "EnableController":"Enable Controller Watcher",
+  "EnableNetwork":"Enable Network Watcher",
+  "EnableStorage":"Enable Storage Watcher",
+  "EnableBattery":"Enable Battery Watcher",
+  "EnablePsu":"Enable PSU Watcher",
+  "Save":"Save"
+}

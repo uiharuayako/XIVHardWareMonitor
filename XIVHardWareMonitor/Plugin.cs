@@ -7,6 +7,9 @@ using Dalamud.Game.Gui.Dtr;
 using Dalamud.Interface.Windowing;
 using LibreHardwareMonitor.Hardware;
 using XIVHardWareMonitor.Windows;
+using System.Reflection;
+using System;
+using System.CodeDom;
 
 namespace XIVHardWareMonitor
 {
@@ -24,7 +27,6 @@ namespace XIVHardWareMonitor
         private MainWindow MainWindow { get; init; }
 
         private DtrConfigWindow DtrConfigWindow { get; init; }
-
         // 硬件监控
         public Computer computer;
 
@@ -46,26 +48,33 @@ namespace XIVHardWareMonitor
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager)
         {
+            ChatGui.Print("XIV HardWare Monitor loaded.^ ^");
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
-
             // 获取硬件监控
-            computer = new Computer()
+            try
             {
-                IsCpuEnabled = Configuration.IsCpuEnabled,
-                IsGpuEnabled = Configuration.IsGpuEnabled,
-                IsMemoryEnabled = Configuration.IsMemoryEnabled,
-                IsMotherboardEnabled = Configuration.IsMotherboardEnabled,
-                IsControllerEnabled = Configuration.IsControllerEnabled,
-                IsNetworkEnabled = Configuration.IsNetworkEnabled,
-                IsStorageEnabled = Configuration.IsStorageEnabled,
-                IsBatteryEnabled = Configuration.IsBatteryEnabled,
-                IsPsuEnabled = Configuration.IsPsuEnabled,
-            };
-            computer.Open();
+                computer = new Computer()
+                {
+                    IsCpuEnabled = Configuration.IsCpuEnabled,
+                    IsGpuEnabled = Configuration.IsGpuEnabled,
+                    IsMemoryEnabled = Configuration.IsMemoryEnabled,
+                    IsMotherboardEnabled = Configuration.IsMotherboardEnabled,
+                    IsControllerEnabled = Configuration.IsControllerEnabled,
+                    IsNetworkEnabled = Configuration.IsNetworkEnabled,
+                    IsStorageEnabled = Configuration.IsStorageEnabled,
+                    IsBatteryEnabled = Configuration.IsBatteryEnabled,
+                    IsPsuEnabled = Configuration.IsPsuEnabled,
+                };
+                computer.Open();
+            }
+            catch (Exception e)
+            {
+                Dalamud.Logging.PluginLog.Log(e.Message);
+            } 
             // 初始化状态栏
             HardwareDtrBar = DtrBar.Get(Name);
             HardwareDtrBar.Shown = true;
@@ -73,7 +82,7 @@ namespace XIVHardWareMonitor
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
             DtrConfigWindow = new DtrConfigWindow(this);
-
+            
             WindowSystem.AddWindow(ConfigWindow);
             WindowSystem.AddWindow(MainWindow);
             WindowSystem.AddWindow(DtrConfigWindow);
@@ -85,25 +94,26 @@ namespace XIVHardWareMonitor
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
-            if (watcher != null)
-            {
-                watcher.Dispose();
-            }
             watcher = new Watcher(this);
         }
-
+        // 修改语言后，更新语言
+        public void UpdateLanguage()
+        {
+            ConfigWindow.UpdateLanguage();
+            // MainWindow.UpdateLanguage();
+            // DtrConfigWindow.UpdateLanguage();
+        }
         public void Dispose()
         {
+            Dalamud.Logging.PluginLog.Log("开始卸载Hardware Monitor");
+            watcher.Dispose();
+            computer.Close();
+            computer = null!;
             WindowSystem.RemoveAllWindows();
-
+            
             ConfigWindow.Dispose();
             MainWindow.Dispose();
-            if (computer != null)
-            {
-                computer.Close();
-            }
-
-            watcher.Dispose();
+            DtrConfigWindow.Dispose();
             HardwareDtrBar.Remove();
             HardwareDtrBar.Dispose();
             CommandManager.RemoveHandler(CommandName);

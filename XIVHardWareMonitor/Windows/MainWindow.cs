@@ -22,16 +22,14 @@ public class MainWindow : Window, IDisposable
             MinimumSize = new Vector2(400, 400),
             MaximumSize = new Vector2(float.MaxValue, float.MaxValue)
         };
-        
+
         this.plugin = plugin;
 
         computer = plugin.computer;
         configuration = plugin.Configuration;
     }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
 
     public override void Draw()
     {
@@ -39,33 +37,38 @@ public class MainWindow : Window, IDisposable
         {
             this.plugin.DrawConfigUI();
         }
+
         ImGui.SameLine();
         if (ImGui.Button("状态栏设置"))
         {
             this.plugin.DrawDtrConfigUI();
         }
+
         ImGui.SameLine();
         if (ImGui.Button("插件主页"))
         {
             Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/DalamudPlugins");
             Plugin.ChatGui.Print("本插件目前还在测试阶段，还没放到这个仓库里");
         }
+
         ImGui.SameLine();
         if (ImGui.Button("移除状态栏"))
         {
             plugin.HardwareDtrBar.Remove();
             plugin.HardwareDtrBar.Dispose();
         }
+
         // 遍历硬件信息，以表的形式显示
         // 遍历传感器信息并输出表格
         int i = 0;
-        foreach (var hardware in Sensors.SensorsDictionary)
+        ImGui.Text($"硬件数量{Sensors.SensorsDictionary.Count}");
+        if (ImGui.BeginChild("Hardware List", new Vector2(0f, -1f), true))
         {
-            if (ImGui.CollapsingHeader(hardware.Key))
+            foreach (var hardware in Sensors.SensorsDictionary)
             {
-                if (ImGui.BeginChild(hardware.Key))
+                if (ImGui.CollapsingHeader(hardware.Key))
                 {
-                    ImGui.Columns(7);
+                    ImGui.Columns(7, hardware.Key);
                     ImGui.Text("序号");
                     ImGui.NextColumn();
                     ImGui.Text("名称");
@@ -87,7 +90,8 @@ public class MainWindow : Window, IDisposable
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Name);
                         ImGui.NextColumn();
-                        ImGui.TextColored(ImGuiColors.DPSRed, StaticUtils.UnitDictionary[sensor.Value.SensorType.ToString()]);
+                        ImGui.TextColored(ImGuiColors.DPSRed,
+                                          StaticUtils.UnitDictionary[sensor.Value.SensorType.ToString()]);
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Value.ToString());
                         ImGui.NextColumn();
@@ -97,16 +101,17 @@ public class MainWindow : Window, IDisposable
                         ImGui.NextColumn();
                         if (ImGui.Button($"添加##{hardware.Key}-{sensor.Key}"))
                         {
-                            configuration.WatchedSensors.Add(new WatchedSensor(hardware.Key, sensor.Key,sensor.Value.Name));
+                            configuration.WatchedSensors.Add(
+                                new WatchedSensor(hardware.Key, sensor.Key, sensor.Value.Name));
                             configuration.Save();
                         }
+
                         ImGui.NextColumn();
-
                     }
-                    ImGui.EndChild();
                 }
-
             }
+
+            ImGui.EndChild();
         }
     }
 }

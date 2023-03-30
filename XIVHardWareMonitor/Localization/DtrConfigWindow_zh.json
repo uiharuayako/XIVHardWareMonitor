@@ -1,0 +1,17 @@
+{
+    "WindowName": "状态栏设置",
+    "Enable": "启用",
+    "Name": "名称",
+    "Display": "状态栏显示",
+    "DisplayHelp": "使用占位符指代信息\n<name>:传感器名称\n<value>:值\n<unit>:单位",
+    "Decimal": "小数位",
+    "Operation": "操作",
+    "EnableMEM": "监控内存信息",
+    "EnableMB": "监控主板信息",
+    "EnableController": "监控控制器信息",
+    "EnableNetwork": "监控网络信息",
+    "EnableStorage": "监控储存信息",
+    "EnableBattery": "监控内存信息",
+    "EnablePsu": "监控电源信息",
+    "Save": "保存"
+}

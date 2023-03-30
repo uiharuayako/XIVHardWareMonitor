@@ -42,7 +42,10 @@ namespace XIVHardWareMonitor
                 // 不存在则初始化
                 if (!_sensors.ContainsKey(sensor.Hardware.HardwareType.ToString()))
                 {
-                    _sensors[sensor.Hardware.HardwareType.ToString()] = new Dictionary<string, ISensor>();
+                    _sensors[sensor.Hardware.HardwareType.ToString()] = new Dictionary<string, ISensor>
+                    {
+                        [sensor.Identifier.ToString()] = sensor
+                    };
                 }
 
                 _sensors[sensor.Hardware.HardwareType.ToString()][sensor.Identifier.ToString()] = sensor;

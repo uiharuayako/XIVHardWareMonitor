@@ -1,0 +1,17 @@
+{
+  "WindowName":"硬件监控设置",
+  "Home":"主界面",
+  "DtrSet":"状态栏设置",
+  "Language":"语言",
+  "RefreshRate":"刷新间隔",
+  "EnableCPU":"监控CPU信息",
+  "EnableGPU":"监控GPU信息",
+  "EnableMEM":"监控内存信息",
+  "EnableMB":"监控主板信息",
+  "EnableController":"监控控制器信息",
+  "EnableNetwork":"监控网络信息",
+  "EnableStorage":"监控储存信息",
+  "EnableBattery":"监控电池信息",
+  "EnablePsu":"监控电源信息",
+  "Save":"保存"
+}

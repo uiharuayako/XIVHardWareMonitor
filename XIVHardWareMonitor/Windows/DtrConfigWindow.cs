@@ -1,5 +1,6 @@
 using Dalamud.Interface.Windowing;
 using ImGuiNET;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using XIVHardWareMonitor.Properties;
 
 namespace XIVHardWareMonitor.Windows
 {
@@ -14,6 +16,7 @@ namespace XIVHardWareMonitor.Windows
     {
         private Configuration configuration;
         private Plugin plugin;
+        private Dictionary<string, string> windowDic;
 
         public DtrConfigWindow(Plugin plugin) : base(
             "状态栏设置",
@@ -24,8 +27,20 @@ namespace XIVHardWareMonitor.Windows
             SizeCondition = ImGuiCond.Once;
 
             this.configuration = plugin.Configuration;
-        }
 
+            // 读取语言文件
+            string jsonStr = Resource.ResourceManager.GetString($"DtrConfigWindow_{configuration.Language}");
+            windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+            WindowName = windowDic["WindowName"];
+        }
+        public void UpdateLanguage()
+        {
+            // 读取语言文件
+            string jsonStr = Resource.ResourceManager.GetString($"DtrConfigWindow_{configuration.Language}");
+            windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
+            WindowName = windowDic["WindowName"];
+
+        }
         public void Dispose() { }
 
         public override void Draw()
@@ -33,17 +48,17 @@ namespace XIVHardWareMonitor.Windows
             if (ImGui.BeginChild("HardwareDtrBarSets"))
             {
                 ImGui.Columns(5);
-                ImGui.Text("启用");
+                ImGui.Text(windowDic["Enable"]);
                 ImGui.NextColumn();
-                ImGui.Text("名称");
+                ImGui.Text(windowDic["Name"]);
                 ImGui.NextColumn();
-                ImGui.Text("状态栏显示");
+                ImGui.Text(windowDic["Display"]);
                 if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip("<name>:传感器名称\n<value>:四舍五入的值\n<unit>:单位\n值暂时改不了，单位和名称可以改成你喜欢的");
+                    ImGui.SetTooltip(windowDic["DisplayHelp"]);
                 ImGui.NextColumn();
-                ImGui.Text("小数位");
+                ImGui.Text(windowDic["Decimal"]);
                 ImGui.NextColumn();
-                ImGui.Text("操作");
+                ImGui.Text(windowDic["Operation"]);
                 ImGui.NextColumn();
                 for (int i = 0; i < configuration.WatchedSensors.Count; i++)
                 {
