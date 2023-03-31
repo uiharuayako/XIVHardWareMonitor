@@ -69,7 +69,7 @@ namespace XIVHardWareMonitor
                             var sensor = Sensors.SensorsDictionary[item.HardWare][item.Identifier];
                             if (item.IsAboveThreshold(sensor))
                             {
-                                Plugin.ChatGui.PrintError($"{sensor.SensorType}!!{sensor.Name}: {sensor.Value} <se.1>");
+                                Plugin.ChatGui.PrintError($"{sensor.SensorType}!!{sensor.Name}: {sensor.Value}");
                             }
                         }
                     }
