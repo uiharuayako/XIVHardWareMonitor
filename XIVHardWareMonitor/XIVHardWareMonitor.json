@@ -5,6 +5,8 @@
     "Description": "硬件监控，输入/hardware打开主窗口",
     "InternalName": "HardWareMonitor",
     "ApplicableVersion": "any",
+    "AssemblyVersion": "0.1.0.0",
+    "IconUrl": "https://raw.githubusercontent.com/uiharuayako/XIVHardWareMonitor/master/Data/icon.png",
     "DalamudApiLevel": 7,
     "Tags": [
         "Monitor",
