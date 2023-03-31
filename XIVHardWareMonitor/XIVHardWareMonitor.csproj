@@ -4,8 +4,7 @@
     <PropertyGroup>
         <Authors>Uiharu</Authors>
         <Company></Company>
-        <Version>0.1.0.0</Version>
-        <Description>A sample plugin.</Description>
+        <Version>0.1.0.1</Version>
         <Copyright></Copyright>
         <PackageProjectUrl>https://github.com/goatcorp/XIVHardWareMonitor</PackageProjectUrl>
     </PropertyGroup>
@@ -38,7 +37,7 @@
     <ItemGroup>
         <PackageReference Include="DalamudPackager" Version="2.1.10" />
         <PackageReference Include="HidSharpCore" Version="1.2.1.1" />
-        <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.2-pre177" />
+        <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3-pre216" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
@@ -72,11 +71,6 @@
 
     <ItemGroup>
         <EmbeddedResource Include="Localization\*.json" />
-        <None Remove="Localization\ConfigWindow_en.json" />
-        <None Remove="Localization\DtrConfigWindow_en.json" />
-        <None Remove="Localization\DtrConfigWindow_zh.json" />
-        <None Remove="Localization\MainWindow_en.json" />
-        <None Remove="Localization\MainWindow_zh.json" />
         <Compile Update="Properties\Resource.Designer.cs">
           <DesignTime>True</DesignTime>
           <AutoGen>True</AutoGen>
@@ -92,9 +86,6 @@
           <Generator>PublicResXFileCodeGenerator</Generator>
           <LastGenOutput>Resource.Designer.cs</LastGenOutput>
         </EmbeddedResource>
-      <None Update="Localization\ConfigWindow_zh.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 </Project>
