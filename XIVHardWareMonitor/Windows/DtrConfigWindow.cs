@@ -143,6 +143,7 @@ namespace XIVHardWareMonitor.Windows
                     }
                     ImGui.NextColumn();
                 }
+                ImGui.Columns(1);
                 ImGui.EndChild();
             }
         }

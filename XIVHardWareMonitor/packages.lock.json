@@ -16,9 +16,9 @@
       },
       "LibreHardwareMonitorLib": {
         "type": "Direct",
-        "requested": "[0.9.3-pre216, )",
-        "resolved": "0.9.3-pre216",
-        "contentHash": "jwfJXmyov8dH4j0dwSEXSU9p2KbAcQJiT85/J4a4UCHDfeblJGro0vbYgqh7iDvuyWUCTCUP6QNZvCR9wDc/tg==",
+        "requested": "[0.9.3-pre219, )",
+        "resolved": "0.9.3-pre219",
+        "contentHash": "hnJdmuazu1gXmLqxK6PByARnAD+r2bBfN15MNYOKbauDq4VgP+n8wlALwWOYfLa/+bd4LXHZTJoCXZZsNBHVdQ==",
         "dependencies": {
           "HidSharp": "2.1.0",
           "Microsoft.Win32.Registry": "5.0.0",

@@ -63,8 +63,7 @@ public class MainWindow : Window, IDisposable
         ImGui.SameLine();
         if (ImGui.Button(windowDic["HomePage"]))
         {
-            Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/DalamudPlugins");
-            Plugin.ChatGui.Print("本插件目前还在测试阶段，还没放到这个仓库里");
+            Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/XIVHardWareMonitor");
         }
 
         ImGui.SameLine();
@@ -123,6 +122,7 @@ public class MainWindow : Window, IDisposable
 
                         ImGui.NextColumn();
                     }
+                    ImGui.Columns(1);
                 }
             }
 

@@ -1,6 +1,6 @@
 # XIVHardWareMonitor
 
-在状态栏监控你的硬件信息，不需要安装AIDA64或者MSI Afterburner啥的也能有详细的监控结果。使用开源库LibreHardwareMonitorLib获取硬件信息。  
+在状态栏监控你的硬件信息，不需要安装AIDA64或者MSI Afterburner啥的也能有详细的监控结果。使用开源库LibreHardwareMonitorLib获取硬件信息。添加插件地址：``https://raw.githubusercontent.com/uiharuayako/DalamudPlugins/main/pluginmaster.json``以获取最新版本。  
 
 功能：
 1. 在状态栏显示硬件信息

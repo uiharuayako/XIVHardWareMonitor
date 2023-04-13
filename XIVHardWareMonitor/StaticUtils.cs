@@ -80,6 +80,7 @@ namespace XIVHardWareMonitor
             { SensorType.SmallData, "MB" },
             { SensorType.Throughput, "B/s" },
             { SensorType.TimeSpan, "S" },
+            { SensorType.Noise ,"DB"}
         };
 
         public static Dictionary<string, int> LanguageDictionary = new Dictionary<string, int>
