@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Authors>Uiharu</Authors>
         <Company></Company>
-        <Version>0.1.0.3</Version>
+        <Version>0.1.0.4</Version>
         <Copyright></Copyright>
         <PackageProjectUrl>https://github.com/goatcorp/XIVHardWareMonitor</PackageProjectUrl>
     </PropertyGroup>

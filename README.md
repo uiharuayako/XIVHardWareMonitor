@@ -6,3 +6,4 @@
 1. 在状态栏显示硬件信息
 2. 定期检测硬件信息，并在数据超过阈值时报警
 3. English support
+4. 如果你装了MSI Afterburner，可以从MSI Afterburner获得数据

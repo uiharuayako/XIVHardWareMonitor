@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 using Dalamud.Game.Gui.Dtr;
+using MSIAfterburnerNET.HM;
 
 namespace XIVHardWareMonitor
 {
@@ -35,7 +36,6 @@ namespace XIVHardWareMonitor
 
         // 任务栏字符串列表
         private List<string> dtrStrList;
-
         public Watcher(Plugin plugin)
         {
             configuration = plugin.Configuration;
@@ -50,7 +50,7 @@ namespace XIVHardWareMonitor
                 computer.Traverse(Sensors.HardwareVisitor);
                 if (Plugin.AfterBurner != null && configuration.UseAfterBurner)
                 {
-                    Plugin.AfterBurner.Refresh();
+                    Sensors.RefreshMsi();
                 }
                 entry.Text = GetDtrStr();
             };
@@ -74,6 +74,16 @@ namespace XIVHardWareMonitor
                             if (item.IsAboveThreshold(sensor))
                             {
                                 Plugin.ChatGui.PrintError($"{sensor.SensorType}!!{sensor.Name}: {sensor.Value}");
+                            }
+                        }
+                        else if (configuration.UseAfterBurner && item.HardWare.Equals("MSIAfterburner"))
+                        {
+                            if (Sensors.AfterburnerEntries.TryGetValue(item.Identifier, out var entity))
+                            {
+                                if (item.IsAboveThreshold(entity))
+                                {
+                                    Plugin.ChatGui.PrintError($"{entity.SrcId.ToString()}!!{entity.LocalizedSrcName}: {entity.Data}");
+                                }
                             }
                         }
                     }
@@ -127,6 +137,12 @@ namespace XIVHardWareMonitor
                         // 获取sensor
                         var sensor = Sensors.SensorsDictionary[item.HardWare][item.Identifier];
                         dtrStrList.Add(item.GetResult(sensor));
+                    }
+                }else if (configuration.UseAfterBurner && item.HardWare.Equals("MSIAfterburner"))
+                {
+                    if (Sensors.AfterburnerEntries.TryGetValue(item.Identifier, out var entity))
+                    {
+                        dtrStrList.Add(item.GetResult(entity));
                     }
                 }
             }

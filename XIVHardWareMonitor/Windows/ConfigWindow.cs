@@ -62,6 +62,13 @@ public class ConfigWindow : Window, IDisposable
             plugin.UpdateTitles();
             ImGui.EndCombo();
         }
+        // 添加Afterburner作为数据来源
+        bool enableAfterBurner = configuration.UseAfterBurner;
+        if (ImGui.Checkbox("Use MSIAfterburner".Loc(),ref enableAfterBurner))
+        {
+            configuration.UseAfterBurner = enableAfterBurner;
+            configuration.Save();
+        }
         // 修改获取间隔
         double refreshRate = configuration.RefreshRate;
         if (ImGui.InputDouble("Refresh Rate(ms)".Loc(), ref refreshRate, 100, 500, "%.1f"))
@@ -82,20 +89,18 @@ public class ConfigWindow : Window, IDisposable
             }
             configuration.WarningRate = warningRate;
         }
+        if (ImGui.Button("Save".Loc()))
+        {
+            Sensors.SensorsDictionary.Clear();
+            plugin.watcher.SetInterval(refreshRate);
+            plugin.watcher.SetWarningInterval(warningRate);
+            configuration.Save();
+        }
         // 设置分隔符
         string separator = configuration.Separator;
         if (ImGui.InputText("Separator".Loc(), ref separator, 20))
         {
             configuration.Separator = separator;
-            configuration.Save();
-        }
-
-        if (ImGui.Button("Save".Loc()))
-        {
-            Plugin.ChatGui.Print("保存设置");
-            Sensors.SensorsDictionary.Clear();
-            plugin.watcher.SetInterval(refreshRate);
-            plugin.watcher.SetWarningInterval(warningRate);
             configuration.Save();
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MSIAfterburnerNET.HM;
 
 namespace XIVHardWareMonitor
 {
@@ -17,8 +18,16 @@ namespace XIVHardWareMonitor
             new();
 
         public static HardwareVisitor HardwareVisitor = new(SensorsDictionary);
+        public static Dictionary<string, HardwareMonitorEntry> AfterburnerEntries = new();
+        public static void RefreshMsi()
+        {
+            for (uint i = 0; i < Plugin.AfterCount; i++)
+            {
+                Plugin.AfterBurner.RefreshEntry(i);
+                AfterburnerEntries.TryAdd(Plugin.AfterBurner.Entries[i].SrcName, Plugin.AfterBurner.Entries[i]);
+            }
+        }
     }
-
     public class HardwareVisitor : IVisitor
     {
         private Dictionary<string, Dictionary<string, ISensor>> _sensors;

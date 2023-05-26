@@ -47,7 +47,8 @@ namespace XIVHardWareMonitor
         [RequiredVersion("1.0")]
         public static ChatGui ChatGui { get; private set; } = null!;
         // AfterBurner
-        public static HardwareMonitor AfterBurner { get; set; } = null!;
+        public static HardwareMonitor AfterBurner { get; set; }=null!;
+        public static int AfterCount = 0;
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager)
@@ -65,6 +66,8 @@ namespace XIVHardWareMonitor
             this.Configuration.Initialize(this.PluginInterface);
             Configuration.Language = Localization.GameLanguageString;
             // 获取硬件监控
+            // 初始化小飞机
+            TryInitAfterBurner();
             try
             {
                 computer = new Computer()
@@ -88,7 +91,7 @@ namespace XIVHardWareMonitor
             // 初始化状态栏
             HardwareDtrBar = DtrBar.Get(Name);
             HardwareDtrBar.Shown = true;
-            HardwareDtrBar.Text = "硬件监控";
+            HardwareDtrBar.Text = "Monitor".Loc();
             ConfigWindow = new ConfigWindow(this);
             MainWindow = new MainWindow(this);
             DtrConfigWindow = new DtrConfigWindow(this);
@@ -105,46 +108,27 @@ namespace XIVHardWareMonitor
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
             watcher = new Watcher(this);
-            // 初始化小飞机
-            TryInitAfterBurner();
-
-#if DEBUG
-            foreach (var hardwareItem in computer.Hardware)
-            {
-                hardwareItem.Update();
-
-                Dalamud.Logging.PluginLog.Log($"Hardware: {hardwareItem.Name} ({hardwareItem.HardwareType})");
-
-                foreach (var sensor in hardwareItem.Sensors)
-                {
-                    Dalamud.Logging.PluginLog.Log($"\t{sensor.Identifier} ({sensor.SensorType}) : {sensor.Value}");
-                }
-
-                foreach (var subHardware in hardwareItem.SubHardware)
-                {
-                    subHardware.Update();
-
-                    Dalamud.Logging.PluginLog.Log($"\tSub Hardware: {subHardware.Name} ({subHardware.HardwareType})");
-
-                    foreach (var sensor in subHardware.Sensors)
-                    {
-                        Dalamud.Logging.PluginLog.Log($"\t\t{sensor.Identifier} ({sensor.SensorType}) : {sensor.Value}");
-                    }
-                }
-            }
-#endif
         }
         // 尝试初始化Afterburner
         public static void TryInitAfterBurner()
         {
+            if (AfterBurner is not null)
+            {
+                ChatGui.PrintError("AfterBurner is not null. if an error occors, you may neet to restart FFXIV to use MSIAfterburner monitor".Loc());
+                return;
+            }
             try
             {
+
                 AfterBurner = new HardwareMonitor();
             }
             catch (Exception e)
             {
-                Dalamud.Logging.PluginLog.Error("小飞机初始化失败");
+                Dalamud.Logging.PluginLog.Error($"小飞机初始化失败{e.Message}");
+                return;
             }
+            AfterBurner.Refresh();
+            AfterCount = AfterBurner.Entries.Length;
         }
 
         public void UpdateTitles()
