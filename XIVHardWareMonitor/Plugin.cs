@@ -10,6 +10,9 @@ using XIVHardWareMonitor.Windows;
 using System.Reflection;
 using System;
 using System.CodeDom;
+using ECommons.DalamudServices;
+using ECommons.LanguageHelpers;
+using MSIAfterburnerNET.HM;
 
 namespace XIVHardWareMonitor
 {
@@ -43,34 +46,29 @@ namespace XIVHardWareMonitor
         [PluginService]
         [RequiredVersion("1.0")]
         public static ChatGui ChatGui { get; private set; } = null!;
-
+        // AfterBurner
+        public static HardwareMonitor AfterBurner { get; set; } = null!;
         public Plugin(
             [RequiredVersion("1.0")] DalamudPluginInterface pluginInterface,
             [RequiredVersion("1.0")] CommandManager commandManager)
         {
+            Svc.Init(pluginInterface);
+            Localization.Init(Localization.GameLanguageString);
+#if DEBUG
+            ChatGui.Print("TestStr".Loc());
+#endif
             ChatGui.Print("XIV HardWare Monitor loaded.^ ^");
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
+            Configuration.Language = Localization.GameLanguageString;
             // 获取硬件监控
             try
             {
                 computer = new Computer()
                 {
-#if RELEASE
-                    IsCpuEnabled = Configuration.IsCpuEnabled,
-                    IsGpuEnabled = Configuration.IsGpuEnabled,
-                    IsMemoryEnabled = Configuration.IsMemoryEnabled,
-                    IsMotherboardEnabled = Configuration.IsMotherboardEnabled,
-                    IsControllerEnabled = Configuration.IsControllerEnabled,
-                    IsNetworkEnabled = Configuration.IsNetworkEnabled,
-                    IsStorageEnabled = Configuration.IsStorageEnabled,
-                    IsBatteryEnabled = Configuration.IsBatteryEnabled,
-                    IsPsuEnabled = Configuration.IsPsuEnabled,
-#endif
-#if DEBUG
                     IsCpuEnabled = true,
                     IsGpuEnabled = true,
                     IsMemoryEnabled = true,
@@ -80,7 +78,6 @@ namespace XIVHardWareMonitor
                     IsStorageEnabled = true,
                     IsBatteryEnabled = true,
                     IsPsuEnabled = true,
-#endif
                 };
                 computer.Open();
             }
@@ -102,12 +99,14 @@ namespace XIVHardWareMonitor
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "/hardware Open main window."
+                HelpMessage = "/hardware Open main window.".Loc()
             });
 
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
             watcher = new Watcher(this);
+            // 初始化小飞机
+            TryInitAfterBurner();
 
 #if DEBUG
             foreach (var hardwareItem in computer.Hardware)
@@ -135,12 +134,24 @@ namespace XIVHardWareMonitor
             }
 #endif
         }
-        // 修改语言后，更新语言
-        public void UpdateLanguage()
+        // 尝试初始化Afterburner
+        public static void TryInitAfterBurner()
         {
-            ConfigWindow.UpdateLanguage();
-            MainWindow.UpdateLanguage();
-            DtrConfigWindow.UpdateLanguage();
+            try
+            {
+                AfterBurner = new HardwareMonitor();
+            }
+            catch (Exception e)
+            {
+                Dalamud.Logging.PluginLog.Error("小飞机初始化失败");
+            }
+        }
+
+        public void UpdateTitles()
+        {
+            MainWindow.UpdateTitle();
+            DtrConfigWindow.UpdateTitle();
+            ConfigWindow.UpdateTitle();
         }
         public void Dispose()
         {
@@ -155,6 +166,10 @@ namespace XIVHardWareMonitor
             HardwareDtrBar.Remove();
             HardwareDtrBar.Dispose();
             CommandManager.RemoveHandler(CommandName);
+            if (AfterBurner!=null)
+            {
+                AfterBurner.Dispose();
+            }
         }
 
         private void OnCommand(string command, string args)

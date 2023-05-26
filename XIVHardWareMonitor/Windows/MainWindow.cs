@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Windowing;
+using ECommons.LanguageHelpers;
 using ImGuiNET;
 using ImGuiScene;
 using LibreHardwareMonitor.Hardware;
 using Newtonsoft.Json;
-using XIVHardWareMonitor.Properties;
 
 namespace XIVHardWareMonitor.Windows;
 
 public class MainWindow : Window, IDisposable
 {
     private Plugin plugin;
-    private Computer computer;
     private Configuration configuration;
-    private Dictionary<string, string> windowDic;
-
+    private static string windowName = "XIV Hardware Monitor";
     public MainWindow(Plugin plugin) : base(
-        "硬件监视", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
+        windowName.Loc(), ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse)
     {
         this.SizeConstraints = new WindowSizeConstraints
         {
@@ -28,40 +26,32 @@ public class MainWindow : Window, IDisposable
         };
 
         this.plugin = plugin;
-
-        computer = plugin.computer;
+        
         configuration = plugin.Configuration;
-        // 读取语言文件
-        string jsonStr = Resource.ResourceManager.GetString($"MainWindow_{configuration.Language}");
-        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
-        WindowName = windowDic["WindowName"];
+        WindowName = windowName.Loc();
     }
-
-    public void UpdateLanguage()
+    public void UpdateTitle()
     {
-        // 读取语言文件
-        string jsonStr = Resource.ResourceManager.GetString($"MainWindow_{configuration.Language}");
-        windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
-        WindowName = windowDic["WindowName"];
+        WindowName = windowName.Loc();
     }
 
     public void Dispose() { }
 
     public override void Draw()
     {
-        if (ImGui.Button(windowDic["Setting"]))
+        if (ImGui.Button("Setting".Loc()))
         {
             this.plugin.DrawConfigUI();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button(windowDic["DtrSet"]))
+        if (ImGui.Button("Dtr Settings".Loc()))
         {
             this.plugin.DrawDtrConfigUI();
         }
 
         ImGui.SameLine();
-        if (ImGui.Button(windowDic["HomePage"]))
+        if (ImGui.Button("HomePage".Loc()))
         {
             Dalamud.Utility.Util.OpenLink("https://github.com/uiharuayako/XIVHardWareMonitor");
         }
@@ -69,7 +59,7 @@ public class MainWindow : Window, IDisposable
         ImGui.SameLine();
         // 遍历硬件信息，以表的形式显示
         // 遍历传感器信息并输出表格
-        ImGui.Text($"{windowDic["HardwareCount"]}：{Sensors.SensorsDictionary.Count}");
+        ImGui.Text($"{"Hardware Count".Loc()}：{Sensors.SensorsDictionary.Count}");
         if (ImGui.BeginChild("Hardware List", new Vector2(0f, -1f), true))
         {
             foreach (var hardware in Sensors.SensorsDictionary)
@@ -78,19 +68,19 @@ public class MainWindow : Window, IDisposable
                 {
                     int i = 0;
                     ImGui.Columns(7, hardware.Key);
-                    ImGui.Text(windowDic["Order"]);
+                    ImGui.Text("Order".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["Name"]);
+                    ImGui.Text("Name".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["Unit"]);
+                    ImGui.Text("Unit".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["Value"]);
+                    ImGui.Text("Value".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["Min"]);
+                    ImGui.Text("Min".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["Max"]);
+                    ImGui.Text("Max".Loc());
                     ImGui.NextColumn();
-                    ImGui.Text(windowDic["StatusBar"]);
+                    ImGui.Text("Status Bar".Loc());
                     ImGui.NextColumn();
                     foreach (var sensor in hardware.Value)
                     {
@@ -113,7 +103,7 @@ public class MainWindow : Window, IDisposable
                         ImGui.NextColumn();
                         ImGui.Text(sensor.Value.Max.ToString());
                         ImGui.NextColumn();
-                        if (ImGui.Button($"{windowDic["Add"]}##{hardware.Key}-{sensor.Key}"))
+                        if (ImGui.Button($"{"Add".Loc()}##{hardware.Key}-{sensor.Key}"))
                         {
                             configuration.WatchedSensors.Add(
                                 new WatchedSensor(hardware.Key, sensor.Key, sensor.Value.Name));

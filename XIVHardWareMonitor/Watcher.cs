@@ -48,6 +48,10 @@ namespace XIVHardWareMonitor
             timer.Elapsed += (sender, args) =>
             {
                 computer.Traverse(Sensors.HardwareVisitor);
+                if (Plugin.AfterBurner != null && configuration.UseAfterBurner)
+                {
+                    Plugin.AfterBurner.Refresh();
+                }
                 entry.Text = GetDtrStr();
             };
             timer.Start();

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LibreHardwareMonitor.Hardware;
+using LibreHardwareMonitor.Hardware.Cpu;
+using MSIAfterburnerNET.HM;
 
 namespace XIVHardWareMonitor
 {
@@ -36,7 +38,6 @@ namespace XIVHardWareMonitor
             WarningThreshold = 100;
             EnableWarning = false;
         }
-
         public string GetResult(ISensor sensor)
         {
             string valueStr = "";
@@ -53,6 +54,20 @@ namespace XIVHardWareMonitor
             return StaticUtils.ReplaceStrings(InfoStr, StaticUtils.PlaceHolders, results);
         }
 
+        // 从小飞机获取信息
+        public string GetResult(HardwareMonitorEntry entry)
+        {
+            string valueStr = "";
+            if (entry.Data != null)
+            {
+                valueStr = Math.Round(entry.Data, Decimal).ToString();
+            }
+            string unit = entry.LocalizedSrcUnits;
+            string[] results =
+                { entry.LocalizedSrcName, valueStr, unit };
+            return StaticUtils.ReplaceStrings(InfoStr, StaticUtils.PlaceHolders, results);
+        }
+
         public bool IsAboveThreshold(ISensor sensor)
         {
             string valueStr = "";
@@ -63,6 +78,11 @@ namespace XIVHardWareMonitor
             
             double.TryParse(valueStr, out double realValue);
             return realValue > WarningThreshold;
+        }
+
+        public bool IsAboveThreshold(HardwareMonitorEntry entry)
+        {
+            return entry.Data > WarningThreshold;
         }
     }
 }

@@ -8,38 +8,28 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using XIVHardWareMonitor.Properties;
+using ECommons.LanguageHelpers;
 
 namespace XIVHardWareMonitor.Windows
 {
     internal class DtrConfigWindow : Window, IDisposable
     {
         private Configuration configuration;
-        private Plugin plugin;
-        private Dictionary<string, string> windowDic;
+        private static string windowName= "DtrBar Settings";
 
         public DtrConfigWindow(Plugin plugin) : base(
-            "状态栏设置",
+            windowName.Loc(),
             ImGuiWindowFlags.NoCollapse)
         {
-            this.plugin = plugin;
             Size = new Vector2(640, ImGui.GetTextLineHeightWithSpacing() + ImGui.GetTextLineHeight() * 13);
             SizeCondition = ImGuiCond.Once;
 
             this.configuration = plugin.Configuration;
-
-            // 读取语言文件
-            string jsonStr = Resource.ResourceManager.GetString($"DtrConfigWindow_{configuration.Language}");
-            windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
-            WindowName = windowDic["WindowName"];
+            WindowName = windowName.Loc();
         }
-        public void UpdateLanguage()
+        public void UpdateTitle()
         {
-            // 读取语言文件
-            string jsonStr = Resource.ResourceManager.GetString($"DtrConfigWindow_{configuration.Language}");
-            windowDic = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonStr);
-            WindowName = windowDic["WindowName"];
-
+            WindowName = windowName.Loc();
         }
         public void Dispose() { }
 
@@ -48,23 +38,23 @@ namespace XIVHardWareMonitor.Windows
             if (ImGui.BeginChild("HardwareDtrBarSets"))
             {
                 ImGui.Columns(7);
-                ImGui.Text(windowDic["Enable"]);
+                ImGui.Text("Enable".Loc());
                 ImGui.NextColumn();
-                ImGui.Text(windowDic["Name"]);
+                ImGui.Text("Name".Loc());
                 ImGui.NextColumn();
-                ImGui.Text(windowDic["Display"]);
+                ImGui.Text("Display".Loc());
                 if (ImGui.IsItemHovered())
-                    ImGui.SetTooltip(windowDic["DisplayHelp"]);
+                    ImGui.SetTooltip("Using placeholders to refer info\n<name>:name\n<value>:value\n<unit>:unit".Loc());
                 ImGui.NextColumn();
-                ImGui.Text(windowDic["Decimal"]);
+                ImGui.Text("Decimal".Loc());
                 ImGui.NextColumn();
                 // 预警相关
-                ImGui.Text(windowDic["EnableWarning"]);
+                ImGui.Text("Enable Warning".Loc());
                 ImGui.NextColumn();
-                ImGui.Text(windowDic["WarningThreshold"]);
+                ImGui.Text("Threshold".Loc());
                 ImGui.NextColumn();
 
-                ImGui.Text(windowDic["Operation"]);
+                ImGui.Text("Operation".Loc());
                 ImGui.NextColumn();
                 for (int i = 0; i < configuration.WatchedSensors.Count; i++)
                 {
@@ -117,7 +107,7 @@ namespace XIVHardWareMonitor.Windows
                     ImGui.NextColumn();
 
                     // 删除按钮
-                    if (ImGui.Button($"{windowDic["Delete"]}##delete{i}"))
+                    if (ImGui.Button($"{"Delete".Loc()}##delete{i}"))
                     {
                         configuration.WatchedSensors.RemoveAt(i);
                         configuration.Save();

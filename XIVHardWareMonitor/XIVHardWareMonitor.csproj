@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Authors>Uiharu</Authors>
         <Company></Company>
-        <Version>0.1.0.2</Version>
+        <Version>0.1.0.3</Version>
         <Copyright></Copyright>
         <PackageProjectUrl>https://github.com/goatcorp/XIVHardWareMonitor</PackageProjectUrl>
     </PropertyGroup>
@@ -13,7 +13,7 @@
         <Move SourceFiles="$(OutDir)\HidSharpCore.dll" DestinationFiles="$(OutDir)\HidSharp.dll" />
     </Target>
     <PropertyGroup>
-        <TargetFramework>net6.0-windows</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <Platforms>x64</Platforms>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -35,9 +35,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.10" />
+        <PackageReference Include="DalamudPackager" Version="2.1.11" />
+        <PackageReference Include="ECommons" Version="2.0.0.4" />
+        <PackageReference Include="Hardware.Info" Version="11.1.0" />
         <PackageReference Include="HidSharpCore" Version="1.2.1.1" />
-        <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3-pre219" />
+        <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.3-pre228" />
+        <PackageReference Include="MSIAfterburnerNET.HM" Version="1.0.7" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <Reference Include="FFXIVClientStructs">
             <HintPath>$(DalamudLibPath)FFXIVClientStructs.dll</HintPath>
@@ -70,22 +73,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Localization\*.json" />
-        <Compile Update="Properties\Resource.Designer.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>Resource.resx</DependentUpon>
-        </Compile>
-        <EmbeddedResource Update="Localization\ConfigWindow_en.json">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Localization\ConfigWindow_zh.json">
-          <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-        </EmbeddedResource>
-        <EmbeddedResource Update="Properties\Resource.resx">
-          <Generator>PublicResXFileCodeGenerator</Generator>
-          <LastGenOutput>Resource.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <None Update="XIVHardWareMonitor.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="LanguageChinese.ini">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Properties\" />
+    </ItemGroup>
+
 
 </Project>
